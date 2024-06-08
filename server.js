@@ -1,21 +1,27 @@
-const Socket = require("websocket").server
-const http = require("http")
+// const Socket = require("websocket").server
+// const http = require("http")
 
-const server = http.createServer((req, res) => {})
+// const server = http.createServer((req, res) => {})
 
-server.listen(3000, () => {
-    console.log("Listening on port 3000...")
-})
+// server.listen(3000, () => {
+//     console.log("Listening on port 3000...")
+// })
 
-const webSocket = new Socket({ httpServer: server })
+const WebSocket = require('ws')
+const PORT = process.env.PORT || 3000;
+const webSocket = new WebSocket.Server({ port: PORT })
+
+// const webSocket = new Socket({ httpServer: server })
 
 let users = []
 
-webSocket.on('request', (req) => {
-    const connection = req.accept()
+webSocket.on('connection', (connection) => {
+    console.log("im here")
+    // const connection = req.accept()
 
     connection.on('message', (message) => {
-        const data = JSON.parse(message.utf8Data)
+        console.log(decodeURIComponent(message))
+        const data = JSON.parse(decodeURIComponent(message))
 
         const user = findUser(data.username)
 
